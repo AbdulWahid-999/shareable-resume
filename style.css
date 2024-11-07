@@ -1,13 +1,16 @@
 body {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   margin: 20px;
   padding: 0;
-  background-color: #c5a40c9e
+  background: url(whit.avif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 form {
   margin: auto;
-  background-color: rgb(216 255 213);
+  background-color: #edf2f4;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   padding: 20px;
@@ -15,16 +18,21 @@ form {
 }
 
 h1 {
+  font-family: "Hanuman", sans-serif;
+  font-weight: 700;
+  font-style:italic;
   text-align: center;
-  color: black;
+  font-weight: 700;
+  margin-bottom: 45px;
+
 }
 
 fieldset {
-  border: 2px solid #0f390e;
+  border: 2px solid #000000;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
-  background-color: aliceblue;
+  background-color: #f1faee;
 }
 
 legend {
@@ -40,46 +48,82 @@ label {
 
 }
 
+
 input,textarea {
   margin-top: 4px;
   padding: 8px;
   width: calc(100% - 1px);
-  border: 1px solid skyblue;
+  border: 1px solid #eaf4f4;
   border-radius: 4px;
   box-sizing: border-box;
+  resize: none;
 }
-
+ .btn-group {
+  display: flex;
+  gap: 15px;
+ }
+ 
 button {
-  display: block;
-  width: 100%;
-  background-color: #00968f;
+
+  background-color: #f1faee;
   color: black;
   border: none;
-  border-radius: 4px;
+  font-weight: 500;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   margin-top: 10px;
   font-size: 18px;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   padding: 10px;
-  cursor: pointer;
 }
 
-button :hover {
-  color: blue;
+
+button:hover {
+  background: black;
+  color: whitesmoke;
+  transform: scale(1.08);
+  transition: 0.5s ease;
+}
+  
+
+  
+.generated-resume {
+  display: none; /* Hidden initially */
+  margin-top: 20px;
+  background-color: white;
+  padding: 40px;
+  border: 1px solid #ddd;
+  border-radius: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-#resume-display {
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
-  border: 2px solid skyblue;
-  border-radius: 8px;
-  background-color: rgb(228, 242, 255);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  /* Making the resume editable*/
-  outline: none;
+.generated-resume h2 {
+  text-align: center;
+  font-family: "Hanuman", sans-serif;
+  font-style: italic;
+  padding: 15px 0;
 }
 
-#resume-display h2 {
+.generated-resume p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  line-height: 1.8;
+}
+
+.generated-resume b {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bold;
+  display: inline-block;
+  width: 120px; /* For better alignment with content */
+  margin-right: 10px;
   color: black;
+}
+
+.generated-resume img {
+  display: block;
+  margin: 20px auto; /* Centers the image with spacing above and below */
+  border-radius: 50%; /* Circular image styling */
+  max-width: 150px;
+  height: 150px;
+  object-fit: cover; /* Ensures the image maintains proportions in a circular shape */
 }

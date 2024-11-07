@@ -1,16 +1,15 @@
-// Get references to the form and display area
+// Get references to elements
 const form = document.getElementById('resume-form') as HTMLFormElement;
-const resumeDisplayElement = document.getElementById('resume-display') as HTMLDivElement;
+const resumeOutputElement = document.getElementById('resume-output') as HTMLDivElement;
 const shareableLinkContainer = document.getElementById('shareable-link-container') as HTMLDivElement;
 const shareableLinkElement = document.getElementById('shareable-link') as HTMLAnchorElement;
 const downloadPdfButton = document.getElementById('download-pdf') as HTMLButtonElement;
 
 // Handle form submission
-form.addEventListener('submit', (event: Event) => {
+form.addEventListener('submit', async (event: Event) => {
     event.preventDefault(); // Prevent page reload
 
     // Collect input values
-    const username = (document.getElementById('username') as HTMLInputElement).value;
     const name = (document.getElementById('name') as HTMLInputElement).value;
     const email = (document.getElementById('email') as HTMLInputElement).value;
     const phone = (document.getElementById('phone') as HTMLInputElement).value;
@@ -18,42 +17,43 @@ form.addEventListener('submit', (event: Event) => {
     const experience = (document.getElementById('experience') as HTMLTextAreaElement).value;
     const skills = (document.getElementById('skills') as HTMLTextAreaElement).value;
 
-    // Save form data in localStorage with the username as the key
-    const resumeData = {
-        name,
-        email,
-        phone,
-        education,
-        experience,
-        skills
-    };
-    localStorage.setItem(username, JSON.stringify(resumeData)); // Saving the data locally
+    // Process the uploaded photo
+    const photoFile = (document.getElementById('photo') as HTMLInputElement).files?.[0];
+    let photoDataURL = '';
+    if (photoFile) {
+        photoDataURL = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(photoFile);
+        });
+    }
 
     // Generate the resume content dynamically
     const resumeHTML = `
-        <h2>Editable Resume</h2>
-        <h3>Personal Information</h3>
+        <h2>*** Your Generated Resume ***</h2>
+        ${photoDataURL ? `<img src="${photoDataURL}" alt="Profile Photo" style="width: 100px; height: auto;">` : ''}
         <p><b>Name:</b> <span contenteditable="true">${name}</span></p>
         <p><b>Email:</b> <span contenteditable="true">${email}</span></p>
         <p><b>Phone:</b> <span contenteditable="true">${phone}</span></p>
-        <h3>Education</h3>
-        <p contenteditable="true">${education}</p>
-        <h3>Experience</h3>
-        <p contenteditable="true">${experience}</p>
-        <h3>Skills</h3>
-        <p contenteditable="true">${skills}</p>
+        <p><b>Education:</b> <span contenteditable="true">${education}</span></p>
+        <p><b>Experience:</b> <span contenteditable="true">${experience}</span></p>
+        <p><b>Skills:</b><span contenteditable="true">${skills}</span></p>
     `;
 
     // Display the generated resume
-    resumeDisplayElement.innerHTML = resumeHTML;
+    resumeOutputElement.innerHTML = resumeHTML;
+    resumeOutputElement.style.display = 'block';
 
     // Generate a shareable URL with the username only
-    const shareableURL = `${window.location.origin}?username=${encodeURIComponent(username)}`;
-
-    // Display the shareable link
+    const shareableURL = `${window.location.origin}?username=${encodeURIComponent(name)}`;
     shareableLinkContainer.style.display = 'block';
     shareableLinkElement.href = shareableURL;
     shareableLinkElement.textContent = shareableURL;
+
+    // Save resume data to local storage
+    const resumeData = { name, email, phone, education, experience, skills };
+    localStorage.setItem(name, JSON.stringify(resumeData));
 });
 
 // Handle PDF download
@@ -66,11 +66,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const username = urlParams.get('username');
     if (username) {
-        // Autofill form if data is found in localStorage
         const savedResumeData = localStorage.getItem(username);
         if (savedResumeData) {
             const resumeData = JSON.parse(savedResumeData);
-            (document.getElementById('username') as HTMLInputElement).value = username;
             (document.getElementById('name') as HTMLInputElement).value = resumeData.name;
             (document.getElementById('email') as HTMLInputElement).value = resumeData.email;
             (document.getElementById('phone') as HTMLInputElement).value = resumeData.phone;
